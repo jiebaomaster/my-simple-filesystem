@@ -13,3 +13,7 @@ install:
 	sudo insmod myfs.ko
 uninstall:
 	sudo rmmod myfs
+mount:
+	sudo mount -t my none /mnt
+umount:
+	sudo umount /mnt
