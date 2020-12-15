@@ -33,3 +33,22 @@ stat /mnt
 # 下列命令封装卸载文件系统命令 sudo umount /mnt
 make umount
 ```
+
+### 0.1.2
+
+支持创建/删除文件（夹），文件（夹）改名
+
+```
+# 在挂载的文件夹下，root 权限运行
+# 创建文件夹
+mkdir a & cd a
+# 删除文件夹
+cd .. & rmdir a
+# 创建文件
+touch f
+# 文件改名
+mv f ff
+# 删除文件
+rm ff
+```
+
