@@ -9,6 +9,7 @@
 #define MY_MAGIC     0x73616d70
 
 struct inode_operations myfs_dir_inode_ops;
+struct inode_operations myfs_file_inode_ops;
 
 static void myfs_put_super(struct super_block *sb)
 {
@@ -102,13 +103,14 @@ struct inode *myfs_get_inode(struct super_block *sb, int mode, dev_t dev)
 		default: // 创建除了目录和普通文件之外的其他文件
 			init_special_inode(inode, mode, dev);
 			break;
-/* We are not ready to handle files yet */
-/*                case S_IFREG:
-			inode->i_op = &myfs_file_inode_operations;
-			break; */
-		case S_IFDIR:
+		case S_IFREG: // 普通文件
+			printk(KERN_INFO "file inode\n");
+			inode->i_op = &myfs_file_inode_ops;
+			break;
+		case S_IFDIR: // 目录文件
 			printk(KERN_INFO "directory inode super_block: %p\n", sb);
 			inode->i_op = &myfs_dir_inode_ops;
+			inode->i_fop = &simple_dir_operations; // 通过其中的 iterate_shared 方法支持 ls 调用
 			// 目录的硬链接计数为 2，自身的 dentry 和自身的 "."
 			set_nlink(inode, 2);
 			break;
@@ -226,6 +228,9 @@ struct inode_operations myfs_dir_inode_ops = {
 	.mknod          = myfs_mknod,
 	.rename         = simple_rename,
 };
+struct inode_operations myfs_file_inode_ops = {
+	.getattr        = simple_getattr,
+};
 
 static struct file_system_type my_fs_type = {
     .owner = THIS_MODULE,
@@ -253,4 +258,4 @@ module_exit(exit_my_fs);
 
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("my filesystem");
-MODULE_VERSION("Ver 0.1.2");
+MODULE_VERSION("Ver 0.1.3");
