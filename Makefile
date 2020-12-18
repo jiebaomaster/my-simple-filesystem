@@ -14,6 +14,6 @@ install:
 uninstall:
 	sudo rmmod myfs
 mount:
-	sudo mount -t my none /mnt
+	mkdir testmp && sudo mount -t my none ./testmp
 umount:
-	sudo umount /mnt
+	sudo umount ./testmp && rm -rf ./testmp

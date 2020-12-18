@@ -21,14 +21,14 @@ make uninstall
 
 支持挂载文件系统，查看状态
 
-```
+``` shell
 # 下列命令封装挂载命令 sudo mount -t my none /mnt
 make mount
 
 # 可用以下命令查看挂载的文件系统
 mount
-stat -f /mnt
-stat /mnt
+stat -f ./testmp
+stat ./testmp
 
 # 下列命令封装卸载文件系统命令 sudo umount /mnt
 make umount
@@ -38,7 +38,7 @@ make umount
 
 支持创建/删除文件（夹），文件（夹）改名
 
-```
+``` shell
 # 在挂载的文件夹下，root 权限运行
 # 创建文件夹
 mkdir a & cd a
@@ -56,3 +56,16 @@ rm ff
 
 支持遍历目录文件内容，即 “ls”
 
+### 0.1.4
+
+支持打开文件，读/写文件，创建/删除软/硬链接
+
+``` shell
+mkdir d
+# 测试文件读写
+echo "hello world" > d/f
+cat d/f
+# 测试软链接
+ln -s d/f df
+cat df
+```
